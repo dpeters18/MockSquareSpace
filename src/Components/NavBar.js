@@ -1,14 +1,14 @@
-
+import { Link } from "react-router-dom"
 
 const NavBar = () => { 
     return (
 
     <ul>
         <li>
-            <a className="waterMark" href="/">Hassan&Devon Inc</a>
-            <a className="templates">Templates</a>
-            <a className="login" href="/login">Log In</a>
-            <a className="register" href="/signup">Sign Up</a>
+            <Link to='/'className="waterMark">Hassan&Devon Inc</Link>
+            <Link className="templates" to="/templates">Templates</Link>
+            <Link className="login" to="/login">Log In</Link>
+            <Link className="register" to="/signup">Sign Up</Link>
         </li>
     </ul>
         
