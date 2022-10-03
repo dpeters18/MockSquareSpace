@@ -4,7 +4,6 @@ import com.example.UserDataAPI.Filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable().cors().disable();
+            http.cors().and().csrf().disable();
         // Set session management to stateless
         http = http
                 .sessionManagement()
@@ -72,17 +73,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
-    //// Used by spring security if CORS is enabled.
-    //    @Bean
-    //    public CorsFilter corsFilter() {
-    //        UrlBasedCorsConfigurationSource source =
-    //                new UrlBasedCorsConfigurationSource();
-    //        CorsConfiguration config = new CorsConfiguration();
-    //        config.setAllowCredentials(true);
-    //        config.addAllowedOrigin("*");
-    //        config.addAllowedHeader("*");
-    //        config.addAllowedMethod("*");
-    //        source.registerCorsConfiguration("/**", config);
-    //        return new CorsFilter(source);
-    //    }
+     //Used by spring security if CORS is enabled.
+        @Bean
+        public CorsFilter corsFilter() {
+            UrlBasedCorsConfigurationSource source =
+                    new UrlBasedCorsConfigurationSource();
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowCredentials(true);
+            config.addAllowedOrigin("http://localhost:3000");
+            config.addAllowedHeader("*");
+            config.addAllowedMethod("*");
+            source.registerCorsConfiguration("/**", config);
+            return new CorsFilter(source);
+        }
 }
